@@ -10,7 +10,7 @@ resources:
 - repo: self
 
 variables:
-  imageRepository: 'app1/app1nginx'
+  imageRepository: 'app1nginx'
   containerRegistry: 'docker-service-connection'
   dockerfilePath: '$(Build.SourcesDirectory)/DockerFile'
 
