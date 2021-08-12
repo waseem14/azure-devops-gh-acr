@@ -22,11 +22,9 @@ stages:
         displayName: Build and Push Image
 
         steps: 
-        - task: AzureCLI@0
+        - task: Bash@3
           inputs:
-            connectedServiceNameSelector: 'connectedServiceName'
-            connectedServiceName: 'azure-vs-sub-connection'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-              az login
+            targetType: 'inline'
+            script: |
+              az login -u m.waseem.ebrahim@accenture.com -p $(MY_PASSWORD)
               az account show
