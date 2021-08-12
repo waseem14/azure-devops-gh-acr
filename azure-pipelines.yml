@@ -12,7 +12,7 @@ resources:
 variables:
   imageRepository: 'app1nginx'
   containerRegistry: 'docker-service-connection'
-  dockerfilePath: '$(Build.SourcesDirectory)/DockerFile'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
 
 stages:
   - stage: Stage1
