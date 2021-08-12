@@ -6,14 +6,15 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: build
+    displayName: Build and push image
+    jobs:
+      - job: Build
+        steps: 
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'docker-service-connection'
+            repository: 'app1/app1nginx'
+            command: 'buildAndPush'
+            Dockerfile: '**/Dockerfile'
