@@ -1,0 +1,58 @@
+trigger:
+- master
+
+variables:
+  imageRepository: 'app1nginxaks'
+  containerRegistry: 'docker-service-connection'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+stages:
+  - stage: Docker container build & Push
+    displayName: Build & Push Image
+    jobs:
+      - job: Build
+        displayName: Build & Push Job
+        steps:
+
+        - task: Docker@2
+          displayName: Build & Push image to ACR
+          inputs:
+            containerRegistry: '$(containerRegistry)'
+            repository: '$(imageRepository)'
+            command: 'buildAndPush'
+            Dockerfile: '$(dockerfilePath)'
+            tags: '$(tag)'
+        - upload: manifests
+          artifact: manifests
+
+
+  - stage: deploy to AKS
+    displayName: Deploy Stage
+    dependsOn: Docker container build & Push
+    jobs:
+      - deployment: Deploy_Stage
+        displayName: Deploy Stage
+        environment: aks-test-env.default
+        strategy:
+         runOnce:
+            deploy:
+              steps:
+              - task: KubernetesManifest@0
+                inputs:
+                  action: 'createSecret'
+                  kubernetesServiceConnection: 'myAksCluster-default'
+                  namespace: 'default'
+                  secretType: 'dockerRegistry'
+                  secretName: 'imagepullsecret'
+                  dockerRegistryEndpoint: 'docker-service-connection'
+              - task: KubernetesManifest@0
+                inputs:
+                  action: 'deploy'
+                  kubernetesServiceConnection: 'myAksCluster-default'
+                  namespace: 'default'
+                  manifests: |
+                    $(Pipeline.Workspace)/manifests/deployment.yml
+                    $(Pipeline.Workspace)/manifests/service.yml
+                  containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+                  imagePullSecrets: 'imagepullsecret'
