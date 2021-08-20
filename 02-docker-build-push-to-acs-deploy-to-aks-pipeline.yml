@@ -24,7 +24,7 @@ stages:
             Dockerfile: '$(dockerfilePath)'
             tags: '$(tag)'
         - upload: manifests
-          artifact: manifests
+          artifact: kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
 
 
   - stage: Deploy
