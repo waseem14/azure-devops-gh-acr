@@ -8,7 +8,7 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-  - stage: Docker container build & Push
+  - stage: Build
     displayName: Build & Push Image
     jobs:
       - job: Build
@@ -27,12 +27,12 @@ stages:
           artifact: manifests
 
 
-  - stage: deploy to AKS
+  - stage: Deploy
     displayName: Deploy Stage
-    dependsOn: Docker container build & Push
+    dependsOn: Build
     jobs:
-      - deployment: DeployStage
-        displayName: Deploy Stage
+      - deployment: Deploy
+        displayName: Deploy
         environment: aks-test-env.default
         strategy:
          runOnce:
