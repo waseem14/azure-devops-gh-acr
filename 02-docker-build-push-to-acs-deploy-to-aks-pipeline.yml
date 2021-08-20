@@ -53,6 +53,6 @@ stages:
                   action: 'deploy'
                   kubernetesServiceConnection: 'myAksCluster-default'
                   namespace: 'default'
-                  manifests: '$(System.DefaultWorkingDirectory)/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
-                  containers: 'aksdevopsacr14/$(imageRepository):$(tag)'
+                  manifests: '$(Pipeline.Workspace)/manifests/01-Deployment-and-LoadBalancer-Service.yml'
+                  containers: 'aksdevopsacr14.azurecr.io/$(imageRepository):$(tag)'
                   imagePullSecrets: 'imagepullsecret'
