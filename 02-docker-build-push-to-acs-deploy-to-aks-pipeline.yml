@@ -7,6 +7,8 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
+pool: Default
+
 stages:
   - stage: Build
     displayName: Build & Push Image
@@ -52,6 +54,6 @@ stages:
                   kubernetesServiceConnection: 'myAksCluster-default'
                   namespace: 'default'
                   manifests: |
-                    kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
+                    $(System.DefaultWorkingDirectory)/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
                   containers: '$(containerRegistry)/$(imageRepository):$(tag)'
                   imagePullSecrets: 'imagepullsecret'
