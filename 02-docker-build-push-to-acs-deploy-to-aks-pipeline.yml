@@ -31,7 +31,7 @@ stages:
     displayName: Deploy Stage
     dependsOn: Docker container build & Push
     jobs:
-      - deployment: Deploy_Stage
+      - deployment: DeployStage
         displayName: Deploy Stage
         environment: aks-test-env.default
         strategy:
