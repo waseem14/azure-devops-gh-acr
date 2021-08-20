@@ -52,7 +52,6 @@ stages:
                   kubernetesServiceConnection: 'myAksCluster-default'
                   namespace: 'default'
                   manifests: |
-                    $(Pipeline.Workspace)/manifests/deployment.yml
-                    $(Pipeline.Workspace)/manifests/service.yml
+                    kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
                   containers: '$(containerRegistry)/$(imageRepository):$(tag)'
                   imagePullSecrets: 'imagepullsecret'
