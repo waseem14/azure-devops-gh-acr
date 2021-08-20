@@ -23,8 +23,8 @@ stages:
             command: 'buildAndPush'
             Dockerfile: '$(dockerfilePath)'
             tags: '$(tag)'
-        - upload: manifests
-          artifact: kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
+        - upload: kube-manifests/01-Deployment-and-LoadBalancer-Service.yml
+          artifact: manifests
 
 
   - stage: Deploy
